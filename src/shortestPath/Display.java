@@ -3,10 +3,13 @@ package shortestPath;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 // Canvas object which will contain all the graphic elements for the network
@@ -17,12 +20,30 @@ class Display extends Canvas {
 	private Network network;
 	private InputState mode = InputState.EDIT_NETWORK;	// "edit" mode is default
 	
+	// Drawing environment constants
+	private int CanvasWidth = 500;
+	private int CanvasHeight = 500;
+	private Color BackgroundColor = Color.GRAY;
+	
+	// Buffered graphics objects
+	private GraphicsConfiguration graphicsconfiguration;
+	private BufferedImage bufferedimage;
+	private Graphics bufferedgraphics;
+	
 	// Node to be moved from one location to another (see below)
 	// private Node moveNode = null; 
 	
 	public Display() {
-		setBackground (Color.GRAY);
-		setSize(500, 500);
+		
+		// Set up canvas
+		setBackground (BackgroundColor);
+		setSize(CanvasWidth, CanvasHeight);
+		
+		// Set up buffered graphics
+		graphicsconfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+		bufferedimage = graphicsconfiguration.createCompatibleImage(CanvasWidth, CanvasHeight);
+		bufferedgraphics = bufferedimage.getGraphics();
+		
 		addMouseListener(new MouseListener(){
 			
 			// Whenever the user clicks a mouse button...
@@ -184,23 +205,37 @@ class Display extends Canvas {
 	
 	// Whenever the canvas needs to be redrawn, then each of the network
 	// elements (nodes and links) must also be redrawn.  The code for
-	// displaying nodes and links lie in their respective classes
+	// displaying nodes and links lie in their respective classes.
+	// This uses buffered graphics (develop in the background, show in
+	// foreground when done).
 	@Override
 	public void paint(Graphics g)
 	{
+		// Set up hidden canvas buffer
+		bufferedgraphics.clearRect(0, 0, CanvasWidth, CanvasHeight);
+		bufferedgraphics.setColor(BackgroundColor);
+		bufferedgraphics.fillRect(0,0,CanvasWidth, CanvasHeight);
+		
+		// Draw individual node and link objects, build into buffer
 		if (network != null) {
 			ArrayList<Link> links = network.getLinks();
 			for (int i=0; i<links.size(); i++) {
 				Link link = links.get(i);
-				link.draw(g);
+				link.draw(bufferedgraphics);
 			}
 			ArrayList<Node> nodes = network.getNodes();
 			for (int i=0; i<nodes.size(); i++) {
 				Node node = nodes.get(i);
-				node.draw(g);
+				node.draw(bufferedgraphics);
 			}
 		}
+		
+		// Display the buffered objects in the foreground, after calcs
+		g.drawImage(bufferedimage,0,0,this);
 	}
 	
-	
+	// Automatically called when needed, in this case, whenever the mouse moves
+	public void update(Graphics g) {
+		paint(g);
+	}
 }
