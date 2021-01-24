@@ -30,6 +30,10 @@ public class Window extends Frame implements WindowListener {
 	// A percentage in decimal form (ex: 0.1 means 10% of nodes will be active)
 	private static int linksPerNode;
 	
+	// For tracking the shortest path highlighting
+	private ArrayList<Link> shortestPath = new ArrayList<>();
+	private boolean shortestPathHighlighted = false;
+	
 	// Entry point for program.  Arguments can be optionally provided to set maxDepth and random network.
 	public static void main(String args[]) throws Exception {
 		
@@ -131,6 +135,8 @@ public class Window extends Frame implements WindowListener {
 			public void itemStateChanged(ItemEvent e) {
 				display.setMode(InputState.EDIT_NETWORK);
 				messageText.setText("Left-click to add nodes and links, right-click to remove them");
+				network.dehighlight(shortestPath);
+				display.repaint();
 			}
 		};
 		
@@ -141,6 +147,8 @@ public class Window extends Frame implements WindowListener {
 			public void itemStateChanged(ItemEvent e) {
 				display.setMode(InputState.PICK_START);
 				messageText.setText("Please select a beginning node");
+				network.dehighlight(shortestPath);
+				display.repaint();
 			}
 		};
 		
@@ -151,6 +159,8 @@ public class Window extends Frame implements WindowListener {
 			public void itemStateChanged(ItemEvent e) {
 				display.setMode(InputState.PICK_FINISH);
 				messageText.setText("Please select an ending node");
+				network.dehighlight(shortestPath);
+				display.repaint();
 			}
 		};
 		
@@ -176,10 +186,11 @@ public class Window extends Frame implements WindowListener {
 				if (startExists && finishExists) {
 					
 					// Find and display shortest distance through network between "start" and "finish" nodes!
-					path = network.shortestPath(startNode, maxDepth);
-					for (Link link : path) {
+					shortestPath = network.shortestPath(startNode, maxDepth);
+					for (Link link : shortestPath) {
 						link.highlightPath();
 						display.repaint();
+						shortestPathHighlighted = true;
 					}
 				}
 				else {
@@ -195,6 +206,13 @@ public class Window extends Frame implements WindowListener {
 		cbFinish.addItemListener(checkBoxFinishListener);
 		submit.addActionListener(submitButtonClickListener);
 	}
+	
+	/*
+	 * // Function to remove the shortest path highlighting private void
+	 * dehighlight() { System.out.println("ENTERED"); if (shortestPathHighlighted) {
+	 * for (Link link : shortestPath) { link.dehighlightPath(); link.needsRepaint();
+	 * } repaint(); shortestPathHighlighted = false; } }
+	 */
 	
 	// Exit program upon closing window
 	@Override
