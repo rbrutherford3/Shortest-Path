@@ -32,7 +32,6 @@ public class Window extends Frame implements WindowListener {
 	
 	// For tracking the shortest path highlighting
 	private ArrayList<Link> shortestPath = new ArrayList<>();
-	private boolean shortestPathHighlighted = false;
 	
 	// Entry point for program.  Arguments can be optionally provided to set maxDepth and random network.
 	public static void main(String args[]) throws Exception {
@@ -135,7 +134,7 @@ public class Window extends Frame implements WindowListener {
 			public void itemStateChanged(ItemEvent e) {
 				display.setMode(InputState.EDIT_NETWORK);
 				messageText.setText("Left-click to add nodes and links, right-click to remove them");
-				network.dehighlight(shortestPath);
+				Network.dehighlight(shortestPath);
 				display.repaint();
 			}
 		};
@@ -147,7 +146,7 @@ public class Window extends Frame implements WindowListener {
 			public void itemStateChanged(ItemEvent e) {
 				display.setMode(InputState.PICK_START);
 				messageText.setText("Please select a beginning node");
-				network.dehighlight(shortestPath);
+				Network.dehighlight(shortestPath);
 				display.repaint();
 			}
 		};
@@ -159,7 +158,7 @@ public class Window extends Frame implements WindowListener {
 			public void itemStateChanged(ItemEvent e) {
 				display.setMode(InputState.PICK_FINISH);
 				messageText.setText("Please select an ending node");
-				network.dehighlight(shortestPath);
+				Network.dehighlight(shortestPath);
 				display.repaint();
 			}
 		};
@@ -174,7 +173,6 @@ public class Window extends Frame implements WindowListener {
 				boolean startExists = false;
 				boolean finishExists = false;
 				Node startNode = null;
-				ArrayList<Link> path;
 				for (Node node : network.getNodes()) {
 					if (node.getState() == NodeState.START) {
 						startExists = true;
@@ -190,7 +188,6 @@ public class Window extends Frame implements WindowListener {
 					for (Link link : shortestPath) {
 						link.highlightPath();
 						display.repaint();
-						shortestPathHighlighted = true;
 					}
 				}
 				else {
