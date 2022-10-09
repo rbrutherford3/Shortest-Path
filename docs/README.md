@@ -38,7 +38,7 @@ Now that the network is laid out and the beginning and ending nodes are defined,
 
 ## Getting Started
 
-The project may be cloned using this [git link](https://github.com/robbie9485/Shortest-Path.git).  Installation for this program comes from the user compiling the downloaded source code on their machine, whether it be through an IDE like *Eclipse* or manually through the command line.
+The project may be cloned using this [git link](https://github.com/rbrutherford3/Shortest-Path.git).  Installation for this program comes from the user compiling the downloaded source code on their machine, whether it be through an IDE like *Eclipse* or manually through the command line.
 
 ## High Level Overview
 
@@ -73,7 +73,7 @@ There are a few ways to test the program, the most obvious being to follow the i
 
 ## Deployment
 
-There is currently no deployment of this program.  It must be compiled from the source code provided ([see this git link](https://github.com/robbie9485/Shortest-Path.git)).
+There is currently no deployment of this program.  It must be compiled from the source code provided ([see this git link](https://github.com/rbrutherford3/Shortest-Path.git)).
 
 ## Built With
 
@@ -81,7 +81,7 @@ There is currently no deployment of this program.  It must be compiled from the 
 
 ## Contributing
 
-Please contact me (robbie9485) on GitHub in order to inquire more about the project.
+Please contact me (rbrutherford3) on GitHub in order to inquire more about the project.
 
 ## Versioning
 
@@ -93,7 +93,7 @@ Robert Rutherford
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details
+This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details
 
 ## Acknowledgments
 
